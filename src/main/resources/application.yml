@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: eleicao-api
+
+  autoconfigure:
+    # A autenticação é por JWT (módulo auth); não queremos o usuário "user" com senha gerada do Spring.
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/eleicao?serverTimezone=America/Sao_Paulo}
+    username: ${DB_USER:eleicao}
+    password: ${DB_PASSWORD:eleicao}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: America/Sao_Paulo
+
+  flyway:
+    enabled: true
+
+  jackson:
+    time-zone: America/Sao_Paulo
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+server:
+  port: 8080
+
+# Módulo auth: assinatura e validade do token JWT.
+app:
+  jwt:
+    # Em produção, defina a variável JWT_SECRET (mínimo 32 caracteres). O padrão é só para desenvolvimento.
+    secret: ${JWT_SECRET:dev-somente-local-troque-em-producao-0123456789}
+    expiracao: ${JWT_EXPIRACAO:2h}

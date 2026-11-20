@@ -1,0 +1,26 @@
+# Sobe o MySQL local para desenvolvimento:  docker compose up -d
+# Derrubar:                                  docker compose down
+# Apagar os dados também:                    docker compose down -v
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: eleicao-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eleicao
+      MYSQL_USER: eleicao
+      MYSQL_PASSWORD: eleicao
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    volumes:
+      - eleicao-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  eleicao-mysql-data:
